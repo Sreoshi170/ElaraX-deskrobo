@@ -1,0 +1,362 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-8.2.0, pluggy-1.6.0
+rootdir: C:\Users\hazra\Downloads\desk_bot
+configfile: pytest.ini
+plugins: anyio-4.14.2, cov-5.0.0
+collected 95 items
+
+backend\tests\graphs\test_master_graph.py FFFF.FFFFFFF...                [ 15%]
+backend\tests\graphs\test_state_and_nodes.py ........................... [ 44%]
+................                                                         [ 61%]
+backend\tests\graphs\test_subgraphs.py ........                          [ 69%]
+backend\tests\test_api.py .FFF.......                                    [ 81%]
+backend\tests\test_gemini_reasoning_service.py ....                      [ 85%]
+backend\tests\test_google_auth_service.py ..                             [ 87%]
+backend\tests\test_invoice_automation.py ...                             [ 90%]
+backend\tests\test_transcription_service.py .........                    [100%]
+
+================================== FAILURES ===================================
+_ test_master_graph_routes_read_requests[What important emails do I have?-GET_URGENT_EMAILS-1 important email] _
+
+raw_input = 'What important emails do I have?'
+expected_intent = 'GET_URGENT_EMAILS', response_fragment = '1 important email'
+
+    @pytest.mark.parametrize(
+        ("raw_input", "expected_intent", "response_fragment"),
+        [
+            ("What important emails do I have?", "GET_URGENT_EMAILS", "1 important email"),
+            ("Amar important emails bolo.", "GET_URGENT_EMAILS", "1 important email"),
+            ("Aaj meri meetings kya hain?", "GET_TODAY_SCHEDULE", "Product stand-up"),
+            ("daily briefing", "DAILY_BRIEFING", "Daily briefing"),
+            ("help", "HELP", "mock email"),
+        ],
+    )
+    def test_master_graph_routes_read_requests(
+        raw_input: str, expected_intent: str, response_fragment: str
+    ) -> None:
+        graph = build_master_graph()
+        thread_id = f"read-{expected_intent}-{raw_input}"
+    
+        result = graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": raw_input},
+            config=graph_run_config(thread_id),
+        )
+    
+        assert result["intent"] == expected_intent
+>       assert response_fragment in result["final_response"]
+E       AssertionError: assert '1 important email' in 'The general AI assistant is not connected yet. Email, calendar, briefing, and robot simulation are available.'
+
+backend\tests\graphs\test_master_graph.py:31: AssertionError
+_ test_master_graph_routes_read_requests[Amar important emails bolo.-GET_URGENT_EMAILS-1 important email] _
+
+raw_input = 'Amar important emails bolo.', expected_intent = 'GET_URGENT_EMAILS'
+response_fragment = '1 important email'
+
+    @pytest.mark.parametrize(
+        ("raw_input", "expected_intent", "response_fragment"),
+        [
+            ("What important emails do I have?", "GET_URGENT_EMAILS", "1 important email"),
+            ("Amar important emails bolo.", "GET_URGENT_EMAILS", "1 important email"),
+            ("Aaj meri meetings kya hain?", "GET_TODAY_SCHEDULE", "Product stand-up"),
+            ("daily briefing", "DAILY_BRIEFING", "Daily briefing"),
+            ("help", "HELP", "mock email"),
+        ],
+    )
+    def test_master_graph_routes_read_requests(
+        raw_input: str, expected_intent: str, response_fragment: str
+    ) -> None:
+        graph = build_master_graph()
+        thread_id = f"read-{expected_intent}-{raw_input}"
+    
+        result = graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": raw_input},
+            config=graph_run_config(thread_id),
+        )
+    
+        assert result["intent"] == expected_intent
+>       assert response_fragment in result["final_response"]
+E       AssertionError: assert '1 important email' in 'The general AI assistant is not connected yet. Email, calendar, briefing, and robot simulation are available.'
+
+backend\tests\graphs\test_master_graph.py:31: AssertionError
+_ test_master_graph_routes_read_requests[Aaj meri meetings kya hain?-GET_TODAY_SCHEDULE-Product stand-up] _
+
+raw_input = 'Aaj meri meetings kya hain?'
+expected_intent = 'GET_TODAY_SCHEDULE', response_fragment = 'Product stand-up'
+
+    @pytest.mark.parametrize(
+        ("raw_input", "expected_intent", "response_fragment"),
+        [
+            ("What important emails do I have?", "GET_URGENT_EMAILS", "1 important email"),
+            ("Amar important emails bolo.", "GET_URGENT_EMAILS", "1 important email"),
+            ("Aaj meri meetings kya hain?", "GET_TODAY_SCHEDULE", "Product stand-up"),
+            ("daily briefing", "DAILY_BRIEFING", "Daily briefing"),
+            ("help", "HELP", "mock email"),
+        ],
+    )
+    def test_master_graph_routes_read_requests(
+        raw_input: str, expected_intent: str, response_fragment: str
+    ) -> None:
+        graph = build_master_graph()
+        thread_id = f"read-{expected_intent}-{raw_input}"
+    
+        result = graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": raw_input},
+            config=graph_run_config(thread_id),
+        )
+    
+        assert result["intent"] == expected_intent
+>       assert response_fragment in result["final_response"]
+E       AssertionError: assert 'Product stand-up' in 'The general AI assistant is not connected yet. Email, calendar, briefing, and robot simulation are available.'
+
+backend\tests\graphs\test_master_graph.py:31: AssertionError
+_ test_master_graph_routes_read_requests[daily briefing-DAILY_BRIEFING-Daily briefing] _
+
+raw_input = 'daily briefing', expected_intent = 'DAILY_BRIEFING'
+response_fragment = 'Daily briefing'
+
+    @pytest.mark.parametrize(
+        ("raw_input", "expected_intent", "response_fragment"),
+        [
+            ("What important emails do I have?", "GET_URGENT_EMAILS", "1 important email"),
+            ("Amar important emails bolo.", "GET_URGENT_EMAILS", "1 important email"),
+            ("Aaj meri meetings kya hain?", "GET_TODAY_SCHEDULE", "Product stand-up"),
+            ("daily briefing", "DAILY_BRIEFING", "Daily briefing"),
+            ("help", "HELP", "mock email"),
+        ],
+    )
+    def test_master_graph_routes_read_requests(
+        raw_input: str, expected_intent: str, response_fragment: str
+    ) -> None:
+        graph = build_master_graph()
+        thread_id = f"read-{expected_intent}-{raw_input}"
+    
+        result = graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": raw_input},
+            config=graph_run_config(thread_id),
+        )
+    
+        assert result["intent"] == expected_intent
+>       assert response_fragment in result["final_response"]
+E       AssertionError: assert 'Daily briefing' in 'The general AI assistant is not connected yet. Email, calendar, briefing, and robot simulation are available.'
+
+backend\tests\graphs\test_master_graph.py:31: AssertionError
+__________ test_master_graph_prepares_consequential_calendar_action ___________
+
+    def test_master_graph_prepares_consequential_calendar_action() -> None:
+        graph = build_master_graph()
+        thread_id = "create-meeting"
+    
+        result = graph.invoke(
+            {
+                "thread_id": thread_id,
+                "user_id": "test-user",
+                "raw_input": "Schedule meeting with Rahul tomorrow at 4.",
+            },
+            config=graph_run_config(thread_id),
+        )
+    
+        assert result["intent"] == "CREATE_MEETING"
+        assert result["risk_level"] == "CONSEQUENTIAL"
+>       assert result["pending_action"]["action"] == "CREATE_MEETING"
+E       TypeError: 'NoneType' object is not subscriptable
+
+backend\tests\graphs\test_master_graph.py:49: TypeError
+________ test_master_graph_executes_explicit_multi_step_plan_in_order _________
+
+    def test_master_graph_executes_explicit_multi_step_plan_in_order() -> None:
+        graph = build_master_graph()
+        thread_id = "multi-step-read"
+    
+        result = graph.invoke(
+            {
+                "thread_id": thread_id,
+                "user_id": "test-user",
+                "raw_input": "Show urgent emails, then show today's meetings.",
+            },
+            config=graph_run_config(thread_id),
+        )
+    
+>       assert [item["intent"] for item in result["task_results"]] == [
+            "GET_URGENT_EMAILS",
+            "GET_TODAY_SCHEDULE",
+        ]
+E       AssertionError: assert ['GET_URGENT_EMAILS'] == ['GET_URGENT_...DAY_SCHEDULE']
+E         
+E         Right contains one more item: 'GET_TODAY_SCHEDULE'
+E         Use -v to get more diff
+
+backend\tests\graphs\test_master_graph.py:66: AssertionError
+___________ test_master_graph_resolves_email_reference_across_turns ___________
+
+    def test_master_graph_resolves_email_reference_across_turns() -> None:
+        graph = build_master_graph()
+        thread_id = "reply-reference"
+        config = graph_run_config(thread_id)
+    
+        graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": "Show urgent emails."},
+            config=config,
+        )
+        result = graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": "Draft a reply to the first email."},
+            config=config,
+        )
+    
+        assert result["intent"] == "DRAFT_REPLY"
+>       assert result["entities"]["target_email_id"] == "email-001"
+E       KeyError: 'target_email_id'
+
+backend\tests\graphs\test_master_graph.py:89: KeyError
+_________ test_master_graph_drafts_new_email_from_voice_style_command _________
+
+    def test_master_graph_drafts_new_email_from_voice_style_command() -> None:
+        graph = build_master_graph()
+        thread_id = "voice-compose-email"
+        raw_input = (
+            "Draft an email to hiring at example dot com with subject Interview "
+            "saying Thank you for your time"
+        )
+    
+        result = graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": raw_input},
+            config=graph_run_config(thread_id),
+        )
+    
+        assert result["intent"] == "COMPOSE_EMAIL"
+        assert result["entities"]["participant_email"] == "hiring@example.com"
+        assert result["entities"]["subject"] == "interview"
+>       assert result["reply_draft"] == "thank you for your time"
+E       AssertionError: assert None == 'thank you for your time'
+
+backend\tests\graphs\test_master_graph.py:110: AssertionError
+______ test_master_graph_prepares_new_voice_email_send_for_confirmation _______
+
+    def test_master_graph_prepares_new_voice_email_send_for_confirmation() -> None:
+        graph = build_master_graph()
+        thread_id = "voice-send-email"
+        raw_input = 'sent email to sreoshibhowmik28@gmail.com "i love u bubu"'
+    
+        result = graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": raw_input},
+            config=graph_run_config(thread_id),
+        )
+    
+        assert result["intent"] == "SEND_EMAIL"
+        assert result["entities"]["participant_email"] == "sreoshibhowmik28@gmail.com"
+>       assert result["pending_action"]["action"] == "SEND_EMAIL"
+E       TypeError: 'NoneType' object is not subscriptable
+
+backend\tests\graphs\test_master_graph.py:128: TypeError
+___ test_explicit_mail_it_correction_reuses_draft_and_requires_confirmation ___
+
+    def test_explicit_mail_it_correction_reuses_draft_and_requires_confirmation() -> None:
+        graph = build_master_graph()
+        thread_id = "send-current-draft"
+        config = graph_run_config(thread_id)
+    
+        graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": "Show urgent emails."},
+            config=config,
+        )
+        draft_result = graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": "Reply to the first email."},
+            config=config,
+        )
+        send_result = graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": "Not draft, mail it."},
+            config=config,
+        )
+    
+>       assert send_result["intent"] == "SEND_REPLY"
+E       AssertionError: assert 'GENERAL_QUERY' == 'SEND_REPLY'
+E         
+E         - SEND_REPLY
+E         + GENERAL_QUERY
+
+backend\tests\graphs\test_master_graph.py:152: AssertionError
+____________ test_master_graph_holds_robot_motion_for_confirmation ____________
+
+    def test_master_graph_holds_robot_motion_for_confirmation() -> None:
+        graph = build_master_graph()
+        thread_id = "turn-left"
+    
+        result = graph.invoke(
+            {"thread_id": thread_id, "user_id": "test-user", "raw_input": "Turn left."},
+            config=graph_run_config(thread_id),
+        )
+    
+        assert result["intent"] == "TURN_LEFT"
+        assert result["risk_level"] == "HIGH_RISK"
+        assert result["robot_status"] is None
+>       assert result["pending_action"]["action"] == "ROBOT_COMMAND"
+E       TypeError: 'NoneType' object is not subscriptable
+
+backend\tests\graphs\test_master_graph.py:171: TypeError
+__________________________ test_chat_routes_to_graph __________________________
+
+    def test_chat_routes_to_graph() -> None:
+        response = client.post("/api/chat", json={"message": "What important emails do I have?"})
+    
+        assert response.status_code == 200
+        assert response.json()["intent"] == "GET_URGENT_EMAILS"
+>       assert "1 important email" in response.json()["response"]
+E       AssertionError: assert '1 important email' in 'The general AI assistant is not connected yet. Email, calendar, briefing, and robot simulation are available.'
+
+backend\tests\test_api.py:29: AssertionError
+_______________ test_consequential_action_requires_confirmation _______________
+
+    def test_consequential_action_requires_confirmation() -> None:
+        chat_response = client.post(
+            "/api/chat",
+            json={"message": "Schedule meeting with Rahul tomorrow at 4", "thread_id": "api-confirm"},
+        )
+    
+        assert chat_response.json()["requires_confirmation"] is True
+>       assert chat_response.json()["pending_action"]["action"] == "CREATE_MEETING"
+E       TypeError: 'NoneType' object is not subscriptable
+
+backend\tests\test_api.py:43: TypeError
+______ test_new_email_send_requires_confirmation_then_uses_email_service ______
+
+    def test_new_email_send_requires_confirmation_then_uses_email_service() -> None:
+        thread_id = "api-send-new-email"
+        chat_response = client.post(
+            "/api/chat",
+            json={
+                "message": 'send email to alice@example.com "hello there"',
+                "thread_id": thread_id,
+            },
+        )
+    
+        assert chat_response.status_code == 200
+        assert chat_response.json()["intent"] == "SEND_EMAIL"
+>       assert chat_response.json()["pending_action"]["recipient"] == "alice@example.com"
+E       TypeError: 'NoneType' object is not subscriptable
+
+backend\tests\test_api.py:65: TypeError
+============================== warnings summary ===============================
+..\..\AppData\Local\Programs\Python\Python310\lib\site-packages\google\api_core\_python_version_support.py:273
+  C:\Users\hazra\AppData\Local\Programs\Python\Python310\lib\site-packages\google\api_core\_python_version_support.py:273: FutureWarning: You are using a Python version (3.10.11) which Google will stop supporting in new releases of google.api_core once it reaches its end of life (2026-10-04). Please upgrade to the latest Python version, or at least Python 3.11, to continue receiving updates for google.api_core past that date.
+    warnings.warn(message, FutureWarning)
+
+..\..\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\testclient.py:1
+  C:\Users\hazra\AppData\Local\Programs\Python\Python310\lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED backend/tests/graphs/test_master_graph.py::test_master_graph_routes_read_requests[What important emails do I have?-GET_URGENT_EMAILS-1 important email]
+FAILED backend/tests/graphs/test_master_graph.py::test_master_graph_routes_read_requests[Amar important emails bolo.-GET_URGENT_EMAILS-1 important email]
+FAILED backend/tests/graphs/test_master_graph.py::test_master_graph_routes_read_requests[Aaj meri meetings kya hain?-GET_TODAY_SCHEDULE-Product stand-up]
+FAILED backend/tests/graphs/test_master_graph.py::test_master_graph_routes_read_requests[daily briefing-DAILY_BRIEFING-Daily briefing]
+FAILED backend/tests/graphs/test_master_graph.py::test_master_graph_prepares_consequential_calendar_action
+FAILED backend/tests/graphs/test_master_graph.py::test_master_graph_executes_explicit_multi_step_plan_in_order
+FAILED backend/tests/graphs/test_master_graph.py::test_master_graph_resolves_email_reference_across_turns
+FAILED backend/tests/graphs/test_master_graph.py::test_master_graph_drafts_new_email_from_voice_style_command
+FAILED backend/tests/graphs/test_master_graph.py::test_master_graph_prepares_new_voice_email_send_for_confirmation
+FAILED backend/tests/graphs/test_master_graph.py::test_explicit_mail_it_correction_reuses_draft_and_requires_confirmation
+FAILED backend/tests/graphs/test_master_graph.py::test_master_graph_holds_robot_motion_for_confirmation
+FAILED backend/tests/test_api.py::test_chat_routes_to_graph - AssertionError:...
+FAILED backend/tests/test_api.py::test_consequential_action_requires_confirmation
+FAILED backend/tests/test_api.py::test_new_email_send_requires_confirmation_then_uses_email_service
+================== 14 failed, 81 passed, 2 warnings in 7.07s ==================

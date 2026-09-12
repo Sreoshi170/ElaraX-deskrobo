@@ -1,0 +1,36 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+secrets/
+**/secrets/
+data/
+.env
+.env.*
+!.env.example
+
+# Frontend and build output
+node_modules/
+.next/
+.vinext/
+.wrangler/
+outputs/
+work/
+dist/
+build/
+coverage/
+*.log
+*.tsbuildinfo
+
+# Credentials, private keys, and local OAuth material
+*.pem
+*.key
+*.p12
+*.pfx
+**/*credentials*.json
+**/*service-account*.json
+**/*oauth*.json
+**/*secret*.json
+**/*token*.json
+**/*api-key*.txt
+**/*apikey*.txt

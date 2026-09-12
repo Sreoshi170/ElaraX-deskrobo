@@ -1,0 +1,25 @@
+﻿app/lib/aether-api.ts(230,37): error TS18046: 'data' is of type 'unknown'.
+app/lib/aether-api.ts(241,37): error TS18046: 'data' is of type 'unknown'.
+app/lib/aether-api.ts(242,3): error TS2322: Type 'unknown' is not assignable to type 'GoogleConnectionStatus'.
+app/lib/aether-api.ts(313,37): error TS18046: 'data' is of type 'unknown'.
+app/lib/aether-api.ts(314,3): error TS2322: Type 'unknown' is not assignable to type 'VoiceTranscriptionResult'.
+app/page.tsx(169,28): error TS2554: Expected 1 arguments, but got 0.
+app/page.tsx(170,26): error TS2554: Expected 1 arguments, but got 0.
+app/page.tsx(172,27): error TS2554: Expected 1 arguments, but got 0.
+app/page.tsx(174,37): error TS2554: Expected 1 arguments, but got 0.
+app/page.tsx(175,34): error TS2554: Expected 1 arguments, but got 0.
+app/page.tsx(178,23): error TS2554: Expected 1 arguments, but got 0.
+app/page.tsx(179,22): error TS2554: Expected 1 arguments, but got 0.
+app/page.tsx(181,23): error TS2554: Expected 1 arguments, but got 0.
+app/page.tsx(182,21): error TS2554: Expected 1 arguments, but got 0.
+app/page.tsx(252,5): error TS2322: Type 'undefined' is not assignable to type 'HTMLAudioElement'.
+app/page.tsx(254,5): error TS2322: Type 'undefined' is not assignable to type 'string'.
+app/page.tsx(291,9): error TS2322: Type 'undefined' is not assignable to type 'string'.
+app/page.tsx(292,9): error TS2322: Type 'undefined' is not assignable to type 'HTMLAudioElement'.
+app/page.tsx(331,5): error TS2322: Type 'undefined' is not assignable to type 'PendingConfirmation'.
+app/page.tsx(374,7): error TS2322: Type 'undefined' is not assignable to type 'PendingConfirmation'.
+app/page.tsx(461,9): error TS2322: Type 'undefined' is not assignable to type 'MediaRecorder'.
+app/page.tsx(462,9): error TS2322: Type 'undefined' is not assignable to type 'MediaStream'.
+app/page.tsx(521,5): error TS2561: Object literal may only specify known properties, but 'minSpeechFrames' does not exist in type 'Partial<ReactRealTimeVADOptions>'. Did you mean to write 'minSpeechMs'?
+app/page.tsx(799,19): error TS2322: Type 'undefined' is not assignable to type 'PendingConfirmation'.
+app/page.tsx(800,19): error TS2322: Type 'undefined' is not assignable to type 'string'.

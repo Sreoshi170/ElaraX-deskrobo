@@ -1,0 +1,42 @@
+# ElaraX Engineering Rules
+
+## Architecture
+
+- All primary agents must use LangGraph.
+- Gemini is the reasoning model, not the workflow orchestrator.
+- External integrations must live in services/tools.
+- LLM must never directly control ESP32 motors.
+- Consequential actions require human confirmation.
+- Emergency STOP bypasses Gemini.
+
+## Languages
+
+Support:
+- English
+- Bengali
+- Hindi
+- Bengali-English code mixing
+- Hindi-English code mixing
+
+## Safety
+
+Never:
+- invent email data
+- invent calendar data
+- report tool success before confirmation
+- expose API keys
+- execute unsupported robot commands
+
+## Coding
+
+- Python 3.11+
+- type hints required
+- Pydantic for API schemas
+- TypedDict for LangGraph state
+- small single-purpose nodes
+- pytest tests for each graph
+- services must be mockable
+
+## Development
+
+Build integrations only after mock graph workflows pass.
