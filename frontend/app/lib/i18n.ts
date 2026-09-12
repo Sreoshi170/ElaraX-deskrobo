@@ -9,6 +9,7 @@ export type UiCopy = {
     intro: string;
     introBody: string;
     workspace: string;
+    dashboard: string;
     command: string;
     today: string;
     connections: string;
@@ -35,7 +36,7 @@ export type UiCopy = {
   };
   welcome: {
     today: string;
-    greeting: (name: string) => string;
+    greeting: (name: string, hour: number) => string;
     clear: string;
     timezone: string;
   };
@@ -183,9 +184,14 @@ export type UiCopy = {
 };
 
 const english: UiCopy = {
-  nav: { aria: 'Primary navigation', intro: 'A calm second mind', introBody: 'For the moments between the meetings.', workspace: 'Workspace', command: 'Command', today: 'Today', connections: 'Connections', robot: 'Desk robot', localWorkspace: 'Local workspace', settings: 'Open settings', home: 'Home', links: 'Links' },
+  nav: { aria: 'Primary navigation', intro: 'A calm second mind', introBody: 'For the moments between the meetings.', workspace: 'Workspace', dashboard: 'Dashboard', command: 'Command', today: 'Today', connections: 'Connections', robot: 'Desk robot', localWorkspace: 'Local workspace', settings: 'Open settings', home: 'Home', links: 'Links' },
   status: { googleConnected: (email) => `Google connected${email ? ` — ${email}` : ''}`, ready: 'LangGraph ready — Google not connected', demo: 'Safe demo mode', wake: 'Hey Elara / DeskBot', wakeStarting: 'Starting…', wakeOn: 'Listening for Hey Elara or Hey DeskBot', wakeOff: 'Turn on hands-free voice commands', notifications: 'Notifications', mute: 'Mute spoken responses', enableSpeech: 'Enable spoken responses', replay: 'Replay last response', exitFocus: 'Exit focus', focus: 'Focus mode' },
-  welcome: { today: 'Today', greeting: (name) => `Good evening, ${name}.`, clear: 'Your desk is clear. What should we take care of?', timezone: 'India Standard Time' },
+  welcome: {
+    today: 'Today',
+    greeting: (name, hour) => `${hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'}, ${name}.`,
+    clear: 'Your desk is clear. What should we take care of?',
+    timezone: 'India Standard Time',
+  },
   voice: {
     idle: { eyebrow: 'Ready when you are', title: 'What should we take care of?', description: 'Speak naturally or type a request in English, Bengali, Hindi, or a mix.' },
     armed: { eyebrow: 'Wake phrase is on', title: 'I’m listening for “Hey Elara” or “Hey DeskBot”.', description: 'Your microphone is open locally. Say either wake phrase, then your request.' },
@@ -206,9 +212,14 @@ const english: UiCopy = {
 
 const hindi: UiCopy = {
   ...english,
-  nav: { aria: 'मुख्य नेविगेशन', intro: 'एक शांत दूसरा मन', introBody: 'मीटिंग्स के बीच के पलों के लिए।', workspace: 'वर्कस्पेस', command: 'कमांड', today: 'आज', connections: 'कनेक्शन', robot: 'डेस्क रोबोट', localWorkspace: 'लोकल वर्कस्पेस', settings: 'सेटिंग्स खोलें', home: 'होम', links: 'लिंक्स' },
+  nav: { aria: 'मुख्य नेविगेशन', intro: 'एक शांत दूसरा मन', introBody: 'मीटिंग्स के बीच के पलों के लिए।', workspace: 'वर्कस्पेस', dashboard: 'डैशबोर्ड', command: 'कमांड', today: 'आज', connections: 'कनेक्शन', robot: 'डेस्क रोबोट', localWorkspace: 'लोकल वर्कस्पेस', settings: 'सेटिंग्स खोलें', home: 'होम', links: 'लिंक्स' },
   status: { ...english.status, googleConnected: (email) => `Google कनेक्टेड${email ? ` — ${email}` : ''}`, ready: 'LangGraph तैयार — Google कनेक्टेड नहीं है', demo: 'सुरक्षित डेमो मोड', wake: 'Hey Elara / DeskBot', wakeStarting: 'शुरू हो रहा है…', wakeOn: 'Hey Elara या Hey DeskBot सुन रहा है', wakeOff: 'हैंड्स-फ्री वॉइस कमांड चालू करें', notifications: 'सूचनाएँ', mute: 'बोले गए जवाब बंद करें', enableSpeech: 'बोले गए जवाब चालू करें', replay: 'पिछला जवाब फिर चलाएँ', exitFocus: 'फोकस से बाहर', focus: 'फोकस मोड' },
-  welcome: { today: 'आज', greeting: (name) => `शुभ संध्या, ${name}।`, clear: 'आपका डेस्क साफ़ है। किस काम से शुरू करें?', timezone: 'भारतीय मानक समय' },
+  welcome: {
+    today: 'आज',
+    greeting: (name, hour) => `${hour < 12 ? 'सुप्रभात' : hour < 17 ? 'शुभ दोपहर' : 'शुभ संध्या'}, ${name}।`,
+    clear: 'आपका डेस्क साफ़ है। किस काम से शुरू करें?',
+    timezone: 'भारतीय मानक समय',
+  },
   voice: { idle: { eyebrow: 'मैं तैयार हूँ', title: 'आज किस काम से शुरू करें?', description: 'हिंदी, English या मिश्रित भाषा में बोलें या लिखें।' }, armed: { eyebrow: 'वेक वाक्य चालू है', title: 'मैं “Hey Elara” या “Hey DeskBot” सुन रही हूँ।', description: 'वेक वाक्य के बाद अपना अनुरोध बोलें।' }, heard: { eyebrow: 'वेक वाक्य सुना', title: 'मैं आपके साथ हूँ।', description: 'कार्रवाई से पहले आपकी बात जाँच रही हूँ।' }, listening: { eyebrow: 'कमांड सुन रही हूँ', title: 'बोलिए, मैं सुन रही हूँ।', description: 'स्वाभाविक रूप से बोलें; रुकने पर रिकॉर्डिंग बंद होगी।' }, thinking: { eyebrow: 'काम चल रहा है', title: 'मैं इसे देख रही हूँ।', description: 'सही स्रोत जाँचकर सुरक्षित उत्तर तैयार कर रही हूँ।' }, speaking: { eyebrow: 'ElaraX बोल रही है', title: 'यह जानकारी मिली है।', description: 'ऊपर के नियंत्रण से आवाज़ बंद या दोबारा चला सकते हैं।' } },
   input: { aria: 'वॉइस कमांड', type: 'अनुरोध लिखें', placeholder: 'हिंदी, English या मिश्रित अनुरोध…', language: 'भाषा', responseLanguage: 'जवाब और आवाज़ की भाषा', speak: 'बोलें', stop: 'रोकें', send: 'भेजें', mode: { auto: 'स्वचालित पहचान / Auto detect', en: 'English', hi: 'हिन्दी', bn: 'বাংলা (Bengali)', mixed: 'मिश्रित / Mixed', voiceFirst: 'वॉइस पहले', cloudFallback: 'क्लाउड फॉलबैक', localWake: 'लोकल वेक पहचान' } },
   quickPrompt: 'आजमाएँ',
@@ -222,9 +233,14 @@ const hindi: UiCopy = {
 
 const bengali: UiCopy = {
   ...english,
-  nav: { aria: 'প্রধান নেভিগেশন', intro: 'একটি শান্ত দ্বিতীয় মন', introBody: 'মিটিংয়ের মাঝের মুহূর্তগুলোর জন্য।', workspace: 'ওয়ার্কস্পেস', command: 'কমান্ড', today: 'আজ', connections: 'সংযোগ', robot: 'ডেস্ক রোবট', localWorkspace: 'লোকাল ওয়ার্কস্পেস', settings: 'সেটিংস খুলুন', home: 'হোম', links: 'লিংকস' },
+  nav: { aria: 'প্রধান নেভিগেশন', intro: 'একটি শান্ত দ্বিতীয় মন', introBody: 'মিটিংয়ের মাঝের মুহূর্তগুলোর জন্য।', workspace: 'ওয়ার্কস্পেস', dashboard: 'ড্যাশবোর্ড', command: 'কমান্ড', today: 'আজ', connections: 'সংযোগ', robot: 'ডেস্ক রোবট', localWorkspace: 'লোকাল ওয়ার্কস্পেস', settings: 'সেটিংস খুলুন', home: 'হোম', links: 'লিংকস' },
   status: { ...english.status, googleConnected: (email) => `Google সংযুক্ত${email ? ` — ${email}` : ''}`, ready: 'LangGraph প্রস্তুত — Google সংযুক্ত নয়', demo: 'নিরাপদ ডেমো মোড', wake: 'Hey Elara / DeskBot', wakeStarting: 'শুরু হচ্ছে…', wakeOn: 'Hey Elara বা Hey DeskBot শুনছি', wakeOff: 'হ্যান্ডস-ফ্রি ভয়েস কমান্ড চালু করুন', notifications: 'বিজ্ঞপ্তি', mute: 'কথার উত্তর বন্ধ করুন', enableSpeech: 'কথার উত্তর চালু করুন', replay: 'শেষ উত্তর আবার চালান', exitFocus: 'ফোকাস থেকে বের হন', focus: 'ফোকাস মোড' },
-  welcome: { today: 'আজ', greeting: (name) => `শুভ সন্ধ্যা, ${name}।`, clear: 'আপনার ডেস্ক পরিষ্কার। কোন কাজটি আগে করব?', timezone: 'ভারতীয় মান সময়' },
+  welcome: {
+    today: 'আজ',
+    greeting: (name, hour) => `${hour < 12 ? 'সুপ্রভাত' : hour < 17 ? 'শুভ অপরাহ্ণ' : 'শুভ সন্ধ্যা'}, ${name}।`,
+    clear: 'আপনার ডেস্ক পরিষ্কার। কোন কাজটি আগে করব?',
+    timezone: 'ভারতীয় মান সময়',
+  },
   voice: { idle: { eyebrow: 'আমি প্রস্তুত', title: 'আজ কোন কাজটি আগে করি?', description: 'বাংলা, English বা মিশ্র ভাষায় বলুন বা লিখুন।' }, armed: { eyebrow: 'ওয়েক ফ্রেজ চালু', title: 'আমি “Hey Elara” বা “Hey DeskBot” শুনছি।', description: 'ওয়েক ফ্রেজের পরে আপনার অনুরোধ বলুন।' }, heard: { eyebrow: 'ওয়েক ফ্রেজ শোনা হয়েছে', title: 'আমি আপনার সঙ্গে আছি।', description: 'কাজ করার আগে আপনার কথাটি যাচাই করছি।' }, listening: { eyebrow: 'কমান্ড শুনছি', title: 'বলুন, আমি শুনছি।', description: 'স্বাভাবিকভাবে বলুন; থামলে রেকর্ডিং বন্ধ হবে।' }, thinking: { eyebrow: 'কাজ চলছে', title: 'আমি এটি দেখে নিচ্ছি।', description: 'সঠিক উৎস পরীক্ষা করে নিরাপদ উত্তর তৈরি করছি।' }, speaking: { eyebrow: 'ElaraX বলছে', title: 'এই তথ্যটি পেয়েছি।', description: 'উপরের নিয়ন্ত্রণ থেকে শব্দ বন্ধ বা আবার চালু করুন।' } },
   input: { aria: 'ভয়েস কমান্ড', type: 'অনুরোধ লিখুন', placeholder: 'বাংলা, English বা মিশ্র অনুরোধ…', language: 'ভাষা', responseLanguage: 'উত্তর ও কণ্ঠের ভাষা', speak: 'বলুন', stop: 'থামান', send: 'পাঠান', mode: { auto: 'স্বয়ংক্রিয় শনাক্ত / Auto detect', en: 'English', hi: 'हिन्दी (Hindi)', bn: 'বাংলা', mixed: 'মিশ্র / Mixed', voiceFirst: 'ভয়েস আগে', cloudFallback: 'ক্লাউড ফোলব্যাক', localWake: 'লোকাল ওয়েক শনাক্ত' } },
   quickPrompt: 'চেষ্টা করুন',

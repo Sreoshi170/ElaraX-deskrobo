@@ -7,6 +7,7 @@ type VoiceMode = UiVoiceMode;
 export type VoiceHeroProps = {
   dateLabel: string;
   timeLabel: string;
+  hour: number;
   input: string;
   setInput: (value: string) => void;
   handleSubmit: (event: FormEvent) => void;
@@ -24,6 +25,7 @@ export type VoiceHeroProps = {
 export default function VoiceHero({
   dateLabel,
   timeLabel,
+  hour,
   input,
   setInput,
   handleSubmit,
@@ -45,7 +47,7 @@ export default function VoiceHero({
       <section className="welcome" id="command">
         <div>
           <p className="eyebrow">{dateLabel}</p>
-          <h1>{copy.welcome.greeting('Hazra')}</h1>
+          <h1>{copy.welcome.greeting('Hazra', hour)}</h1>
           <p>{copy.welcome.clear}</p>
         </div>
         <div className="welcome-time">

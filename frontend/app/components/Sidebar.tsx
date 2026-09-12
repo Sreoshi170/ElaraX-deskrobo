@@ -1,7 +1,17 @@
 import React from 'react';
 import { UiLanguage, getUiCopy } from '../lib/i18n';
 
-export default function Sidebar({ language }: { language: UiLanguage }) {
+export type WorkspaceView = 'home' | 'dashboard';
+
+export default function Sidebar({
+  language,
+  activeView,
+  onViewChange,
+}: {
+  language: UiLanguage;
+  activeView: WorkspaceView;
+  onViewChange: (view: WorkspaceView) => void;
+}) {
   const copy = getUiCopy(language);
   return (
     <aside className="sidebar" aria-label={copy.nav.aria}>
@@ -15,10 +25,11 @@ export default function Sidebar({ language }: { language: UiLanguage }) {
       </div>
       <nav className="nav-stack">
         <p className="nav-label">{copy.nav.workspace}</p>
-        <a className="nav-item active" href="#command"><span className="nav-glyph">+</span>{copy.nav.command}</a>
-        <a className="nav-item" href="#briefing"><span className="nav-glyph">○</span>{copy.nav.today}</a>
-        <a className="nav-item" href="#connections"><span className="nav-glyph">~</span>{copy.nav.connections}</a>
-        <a className="nav-item" href="#robot"><span className="nav-glyph">□</span>{copy.nav.robot}</a>
+        <a className={`nav-item${activeView === 'dashboard' ? ' active' : ''}`} href="#dashboard" onClick={(event) => { event.preventDefault(); onViewChange('dashboard'); }}><span className="nav-glyph">▦</span>{copy.nav.dashboard}</a>
+        <a className={`nav-item${activeView === 'home' ? ' active' : ''}`} href="#command" onClick={() => onViewChange('home')}><span className="nav-glyph">+</span>{copy.nav.command}</a>
+        <a className="nav-item" href="#briefing" onClick={() => onViewChange('home')}><span className="nav-glyph">○</span>{copy.nav.today}</a>
+        <a className="nav-item" href="#connections" onClick={() => onViewChange('home')}><span className="nav-glyph">~</span>{copy.nav.connections}</a>
+        <a className="nav-item" href="#robot" onClick={() => onViewChange('home')}><span className="nav-glyph">□</span>{copy.nav.robot}</a>
       </nav>
       <div className="sidebar-footer">
         <div className="avatar">AH</div>

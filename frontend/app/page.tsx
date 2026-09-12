@@ -29,8 +29,8 @@ import {
   synthesizeVoice,
   transcribeVoice,
 } from './lib/aether-api';
-import { useMicVAD, utils } from '@ricky0123/vad-react';
-import Sidebar from './components/Sidebar';
+import { utils } from '@ricky0123/vad-web';
+import Sidebar, { WorkspaceView } from './components/Sidebar';
 import Topbar from './components/Topbar';
 import VoiceHero from './components/VoiceHero';
 import ConversationPanel from './components/ConversationPanel';
@@ -39,6 +39,7 @@ import AuthPage from './components/AuthPage';
 import ConnectionsStrip from './components/ConnectionsStrip';
 import ContextRail from './components/ContextRail';
 import DashboardPanel from './components/DashboardPanel';
+import { useSafeMicVAD } from './lib/safe-vad';
 import * as ort from 'onnxruntime-web';
 
 const onnxWasmBasePath = process.env.NODE_ENV === 'development'
@@ -47,14 +48,6 @@ const onnxWasmBasePath = process.env.NODE_ENV === 'development'
 
 if (typeof window !== 'undefined') {
   ort.env.wasm.wasmPaths = onnxWasmBasePath;
-  const browserWindow = window as Window & { __elaraVADCleanupGuard?: boolean };
-  if (!browserWindow.__elaraVADCleanupGuard) {
-    browserWindow.__elaraVADCleanupGuard = true;
-    window.addEventListener('unhandledrejection', (event) => {
-      const reason = event.reason instanceof Error ? event.reason.message : String(event.reason ?? '');
-      if (reason.includes('MicVAD has null stream, audio context, or processor adapter')) event.preventDefault();
-    });
-  }
 }
 
 import {
@@ -186,6 +179,7 @@ function AssistantWorkspace({ session, onSignOut }: { session: AuthSession; onSi
   const [ttsState, setTtsState] = useState<TtsState>('idle');
   const [lastAssistantText, setLastAssistantText] = useState('');
   const [focusMode, setFocusMode] = useState(false);
+  const [activeView, setActiveView] = useState<WorkspaceView>('home');
   const [notice, setNotice] = useState<string>();
   const [clock, setClock] = useState<Date>(() => new Date(0));
   const googleConnectedRef = useRef(false);
@@ -342,6 +336,7 @@ function AssistantWorkspace({ session, onSignOut }: { session: AuthSession; onSi
   const locale = localeForUiLanguage(uiLanguage);
   const dateLabel = useMemo(() => clock.getTime() === 0 ? copy.welcome.today : clock.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' }), [clock, copy.welcome.today, locale]);
   const timeLabel = useMemo(() => clock.getTime() === 0 ? '--:--' : clock.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false }), [clock, locale]);
+  const greetingHour = clock.getTime() === 0 ? new Date().getHours() : clock.getHours();
 
   const stopSpeaking = () => {
     ttsRequestRef.current += 1;
@@ -647,7 +642,7 @@ function AssistantWorkspace({ session, onSignOut }: { session: AuthSession; onSi
     await startVoiceRecording();
   };
 
-  const vad = useMicVAD({
+  const vad = useSafeMicVAD({
     startOnLoad: false,
     baseAssetPath: '/',
     onnxWASMBasePath: onnxWasmBasePath,
@@ -990,7 +985,7 @@ function AssistantWorkspace({ session, onSignOut }: { session: AuthSession; onSi
             : 'idle';
   return (
     <main className={`aether-app${focusMode ? ' focus-mode' : ''}`}>
-      <Sidebar language={uiLanguage} />
+      <Sidebar language={uiLanguage} activeView={activeView} onViewChange={setActiveView} />
 
       <section className="main-stage">
         <Topbar
@@ -1014,7 +1009,7 @@ function AssistantWorkspace({ session, onSignOut }: { session: AuthSession; onSi
         />
 
         <div className="stage-content">
-          <DashboardPanel
+          {activeView === 'dashboard' ? <DashboardPanel
             data={dashboard}
             loading={dashboardLoading}
             refreshing={dashboardRefreshing}
@@ -1022,10 +1017,11 @@ function AssistantWorkspace({ session, onSignOut }: { session: AuthSession; onSi
             onCompleteActionItem={(itemId) => void handleCompleteActionItem(itemId)}
             completingActionItemId={completingActionItemId}
           />
-
+          : <>
           <VoiceHero
             dateLabel={dateLabel}
             timeLabel={timeLabel}
+            hour={greetingHour}
             input={input}
             setInput={setInput}
             handleSubmit={handleSubmit}
@@ -1078,10 +1074,11 @@ function AssistantWorkspace({ session, onSignOut }: { session: AuthSession; onSi
             endRef={endRef}
             language={uiLanguage}
           />
+          </>}
         </div>
       </section>
 
-      <ContextRail
+      {activeView === 'home' && <ContextRail
         overview={overview}
         attentionCount={attentionCount}
         urgentEmail={urgentEmail}
@@ -1092,13 +1089,13 @@ function AssistantWorkspace({ session, onSignOut }: { session: AuthSession; onSi
         submitCommand={submitCommand}
         handleCompleteActionItem={handleCompleteActionItem}
         language={uiLanguage}
-      />
+      />}
 
       <nav className="mobile-nav" aria-label={copy.nav.aria}>
-        <a href="#command" className="active"><span aria-hidden="true">+</span><span>{copy.nav.home}</span></a>
-        <a href="#briefing"><span aria-hidden="true">○</span><span>{copy.nav.today}</span></a>
-        <a href="#connections"><span aria-hidden="true">~</span><span>{copy.nav.links}</span></a>
-        <a href="#robot"><span aria-hidden="true">□</span><span>{copy.nav.robot}</span></a>
+        <a href="#command" className={activeView === 'home' ? 'active' : ''} onClick={() => setActiveView('home')}><span aria-hidden="true">+</span><span>{copy.nav.home}</span></a>
+        <a href="#dashboard" className={activeView === 'dashboard' ? 'active' : ''} onClick={(event) => { event.preventDefault(); setActiveView('dashboard'); }}><span aria-hidden="true">▦</span><span>{copy.nav.dashboard}</span></a>
+        <a href="#briefing" onClick={() => setActiveView('home')}><span aria-hidden="true">○</span><span>{copy.nav.today}</span></a>
+        <a href="#connections" onClick={() => setActiveView('home')}><span aria-hidden="true">~</span><span>{copy.nav.links}</span></a>
       </nav>
     </main>
   );
